@@ -1,0 +1,17 @@
+df=pd.read_csv("/kaggle/input/tsf-datasets/SampleSuperstore.csv")
+df.head()
+pandas_profiling.ProfileReport(df)
+
+state=df.groupby('State')['Sales','Quantity','Profit'].agg('sum').reset_index()
+px.bar(x=state['State'],y=state['Sales'],color=state['Profit'],labels={'x':'State','y':'Sales','color':'Profit'})
+
+px.bar(x=state['State'],y=state['Quantity'],color=state['Profit'],labels={'x':'State','y':'Quantity','color':'Profit'})
+
+px.bar(x=state['State'],y=state['Sales'],color=state['Quantity'],labels={'x':'State','y':'Sales','color':'Quantity'})
+
+px.bar(x=state['State'],y=state['Profit']/state['Sales'],color=state['Quantity'],labels={'x':'State','y':'Sales','color':'Quantity'})
+#The profit to Sales ratio is a very useful indicator to identify the target locations to maximize the profit.
+#A higher profit to sales ratio means that the profit is likely to be higher as the state may have some highly profitable factors for the buisness.
+
+state=df.groupby('State').agg('count').reset_index()
+px.bar(x=state['State'],y=state['Profit'],labels={'x':'State','y':'Number of stores'})
